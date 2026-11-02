@@ -27,6 +27,8 @@ ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1
 
 COPY --chown=app:app app/ ./app/
+COPY --chown=app:app alembic.ini ./alembic.ini ./
+COPY --chown=app:app alembic ./alembic /
 
 USER app
 

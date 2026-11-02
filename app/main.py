@@ -3,9 +3,11 @@ from sqlalchemy import text
 
 from app.core.config import Settings, get_settings
 from app.db.session import SessionDep
+from app.core.exceptions.handlers import register_exception_handlers
 
 
 app = FastAPI(title = get_settings().APP_NAME)
+register_exception_handlers(app)
 
 
 @app.get('/health')

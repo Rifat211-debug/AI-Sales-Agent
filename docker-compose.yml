@@ -8,9 +8,11 @@ services:
       - .env
     environment:
       DB_HOST: db
-      DB_PORT: 5432
+      DB_PORT: 5432  
     volumes:
       - ./app:/app/app
+      - ./alembic:/app/alembic
+      - ./alembic.ini:/app/alembic.ini
     depends_on:
       db:
         condition: service_healthy
