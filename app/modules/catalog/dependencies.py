@@ -12,6 +12,6 @@ def get_product_repository(session: SessionDep) -> ProductRepository:
 ProductRepositoryDep = Annotated[ProductRepository, Depends(get_product_repository)]
 
 def get_product_service(repo: ProductRepositoryDep) -> ProductService:
-    return ProductService(ProductRepositoryDep)
+    return ProductService(repo)
 
 ProductServiceDep = Annotated[ProductService, Depends(get_product_service)]

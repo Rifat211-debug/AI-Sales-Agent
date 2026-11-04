@@ -30,11 +30,11 @@ class ProductRead(ProductBase):
     model_config = ConfigDict(from_attributes = True)
 
 
-class ProductUpdate(ProductBase):
+class ProductUpdate(BaseModel):
     """Every field is optional: only what the client sends is changed"""
 
     name: str | None = Field(default = None, min_length = 2, max_length = 255)
-    price: Decimal | None = Field(default = None, ge = 0, max_digits = 10, decimal_places = 2)
+    price: Decimal | None = Field(default = None, gt = 0, max_digits = 10, decimal_places = 2)
     stock: int | None = Field(default = None, ge = 0)
     warranty_months: int | None = Field(default = None, ge = 0)
     description: str | None = None
@@ -57,7 +57,7 @@ class ProductFilters(BaseModel):
     min_price: Decimal | None = Field(default = None, gt = 0)
     max_price: Decimal | None = Field(default = None, gt = 0)
     in_stock: bool | None = None
-    sort: SortOption | None = SortOption.NEWEST
+    sort: SortOption = SortOption.NEWEST
     page: int = 1
     page_size: int = 10
 

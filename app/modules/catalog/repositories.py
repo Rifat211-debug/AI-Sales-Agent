@@ -34,7 +34,7 @@ class ProductRepository:
         return product
 
 
-    async def get_by_slug(self, slug: str) -> Product:
+    async def get_by_slug(self, slug: str) -> Product | None:
         stmt = select(Product).where(Product.slug == slug, Product.is_active.is_(True))
         return await self.db_session.scalar(stmt)
 
@@ -61,14 +61,14 @@ class ProductRepository:
             stmt = stmt.where(Product.category == f.category)
         if f.brand:
             stmt = stmt.where(Product.brand == f.brand)
-        if f.max_price:
+        if f.max_price is not None:
             stmt = stmt.where(Product.price <= f.max_price)
-        if f.min_price:
+        if f.min_price is not None:
             stmt = stmt.where(Product.price >= f.min_price)
         if f.in_stock is True:
-            stmt = stmt.where(Product.in_stock > 0)
+            stmt = stmt.where(Product.stock > 0)
         elif f.in_stock is False:
-            stmt = stmt.where(Product.in_stock == 0)
+            stmt = stmt.where(Product.stock == 0)   
         return stmt
 
 

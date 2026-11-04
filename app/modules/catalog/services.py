@@ -11,7 +11,7 @@ from app.modules.catalog.schemas import (
 
 
 def to_read(product: Product) -> ProductRead:
-    return ProductRead.model_validate(Product)
+    return ProductRead.model_validate(product)
 
 
 class ProductService:
@@ -26,14 +26,14 @@ class ProductService:
         if await self.repo.exists_by_slug(data.slug):
             raise ConflictError("Product", data.slug)
         product = await self.repo.add(Product(**data.model_dump()))
-        return to_read(Product)
+        return to_read(product)
 
 
     async def get_product(self, slug: str) -> ProductRead:
         product = await self.repo.get_by_slug(slug)
         if product is None:
             raise NotFoundError("Product", slug)
-        return to_read(Product)
+        return to_read(product)
 
 
     async def get_all_products(self, filters: ProductFilters) -> Page:
@@ -43,7 +43,7 @@ class ProductService:
             and filters.min_price > filters.max_price
         ):
             filters.min_price, filters.max_price = filters.max_price, filters.min_price
-        items, total = self.repo.search(filters)
+        items, total = await self.repo.search(filters)
         return Page(
             items = [to_read(p) for p in items],
             total = total,
@@ -58,7 +58,7 @@ class ProductService:
             raise NotFoundError("Product", slug)
         for field, value in data.model_dump(exclude_unset = True).items():
             setattr(product, field, value)
-        self.repo.save(product)
+        await self.repo.save(product)
         return to_read(product)
 
 
@@ -67,4 +67,5 @@ class ProductService:
         if product is None:
             raise NotFoundError("Product", slug)
         product.is_active = False
+        await self.repo.save(product)
 

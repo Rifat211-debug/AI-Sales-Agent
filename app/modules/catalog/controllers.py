@@ -36,4 +36,4 @@ async def update_product(slug: str, data: ProductUpdate, service: ProductService
 
 @router.delete("/{slug}", status_code = status.HTTP_204_NO_CONTENT)
 async def archive_product(slug: str, service: ProductServiceDep) -> None:
-    return service.archive_product(slug)  
+    await service.archive_product(slug)  
