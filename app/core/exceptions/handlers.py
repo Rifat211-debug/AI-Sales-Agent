@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from app.core.exceptions.errors import ConflictError, NotFoundError
+from app.core.exceptions.errors import ConflictError, NotFoundError, LLMUavailableError
 
 
 def register_exception_handlers(app: FastAPI) -> None:
@@ -12,4 +12,11 @@ def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(ConflictError)
     async def conflict(_: Request, exc: ConflictError) -> JSONResponse:
         return JSONResponse(status_code = 409, content = {"detail": str(exc)})
+
+    @app.exception_handler(LLMUavailableError)
+    async def llm_unavailable(_: Request, exc: LLMUavailableError) -> JSONResponse:
+        return JSONResponse(
+            status_code = 503,
+            content = {"detail": "The assistant is unavailable. Try again later."}
+        )
     

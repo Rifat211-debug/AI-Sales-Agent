@@ -13,4 +13,11 @@ class ConflictError(AppError):
     def __init__(self, resource: str, key: str):
         super().__init__(f"Conflict with '{resource}' and key '{key}'")
 
+
+class LLMUavailableError(AppError):
+    """Raise when LLM provider fails."""
+
+
+
+
         

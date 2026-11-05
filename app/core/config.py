@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     DB_NAME: str = "sales_agent"
     DB_SCHEMA: str = "sales_agent"
 
+    GROQ_API_KEY: SecretStr = SecretStr("")
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
+
 
     @property
     def DATABASE_URL(self) -> URL:
