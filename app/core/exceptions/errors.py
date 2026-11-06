@@ -14,7 +14,7 @@ class ConflictError(AppError):
         super().__init__(f"Conflict with '{resource}' and key '{key}'")
 
 
-class LLMUavailableError(AppError):
+class LLMUnavailableError(AppError):
     """Raise when LLM provider fails."""
 
 
